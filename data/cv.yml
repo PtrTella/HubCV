@@ -1,0 +1,322 @@
+config:
+  colors:
+    accent: '#7C3AED'
+    chip_bg: '#F1F5F9'
+    chip_border: '#CBD5E1'
+    left_bg: '#6FE3FF'
+    line_color: '#CBD5E1'
+    primary: '#0F172A'
+    primary_text: '#0F172A'
+    right_bg: '#A380FF'
+    secondary_text: '#1E293B'
+    sidebar_accent: '#6FE3FF'
+    sidebar_bg: '#0F172A'
+    sidebar_muted: '#94A3B8'
+    sidebar_text: '#F8FAFC'
+    text_main: '#1E293B'
+    text_muted: '#475569'
+  font_family: Helvetica
+  font_size: 8.5pt
+  lang: it
+  line_spacing: 0.46em
+  margin_bottom: 0.8cm
+  margin_x: 1.2cm
+  margin_y: 0.8cm
+  palette: vibrant_duo
+  section_spacing: 4.0pt
+  show_gdpr: true
+  show_photo: true
+  template: split_header
+en:
+  education:
+  - degree: M.Sc. in Artificial Intelligence
+    details: Curriculum centered on Deep Learning, Generative AI, Computer Vision,
+      and Distributed Systems.
+    institution: University of Bologna
+    period: 2023 - Present
+  - degree: Master's Thesis Research in Generative AI
+    details: Thesis research on inference acceleration and similarity caching for
+      diffusion models.
+    institution: Université Côte d'Azur / INRIA 🇫🇷
+    period: Mar - Aug 2025
+  - degree: Erasmus Exchange in Computer Science
+    details: Advanced coursework in Distributed AI and scalable computational algorithms.
+    institution: Linköping University 🇸🇪
+    period: Jan - May 2025
+  - degree: Erasmus Exchange in Data Science
+    details: Statistical predictive modeling, machine learning, and data analytics.
+    institution: Instituto Universitário de Lisboa (ISCTE) 🇵🇹
+    period: Feb - Jul 2024
+  - degree: B.Sc. in Computer Science and Engineering
+    details: 'Final thesis: Computer Vision and Deep Learning applied to basketball
+      player and ball tracking.'
+    institution: University of Bologna 🎓
+    period: 2020 - 2023
+  - degree: High School Diploma in Applied Sciences
+    details: Strong foundations in mathematics, computing, and natural sciences.
+    institution: Liceo Scientifico Alberghetti 🎓
+    period: 2015 - 2020
+  experience:
+  - bullets:
+    - Engineered and benchmarked **similarity caching** mechanisms for text-to-image
+      diffusion pipelines, skipping redundant denoiser steps and reducing inference
+      latency by up to **35%**.
+    - Conducted systematic empirical evaluations measuring trade-offs between computational
+      cost (FLOPs, runtime per step) and image quality metrics (FID, CLIP score).
+    - Authored high-performance **PyTorch** experimental suites, connecting theoretical
+      GenAI research to reproducible benchmarks for high-throughput deployment.
+    company: INRIA - National Institute for Research in Digital Science
+    description: Engineered and benchmarked **similarity caching** mechanisms for
+      text-to-image diffusion pipelines, skipping redundant denoiser steps and reducing
+      inference latency by up to **35%**. Conducted systematic empirical evaluations
+      measuring trade-offs between computational cost (FLOPs, runtime per step) and
+      image quality metrics (FID, CLIP score). Authored high-performance **PyTorch**
+      experimental suites, connecting theoretical GenAI research to reproducible benchmarks
+      for high-throughput deployment.
+    period: Mar - Aug 2025
+    role: Generative AI Research Intern 🔬
+  - bullets:
+    - Engineered and maintained **Python** control software for proprietary automated
+      biotech instruments, integrating hardware sensors, motorized stages, and controllers.
+    - Operated in a fast-paced **Agile/Scrum** deep-tech environment, delivering rapid
+      feature cycles and high operational reliability during laboratory assays.
+    - Developed real-time telemetry and diagnostic modules, improving instrument uptime
+      and analytical workflow throughput.
+    company: CellDynamics I.S.R.L.
+    description: Engineered and maintained **Python** control software for proprietary
+      automated biotech instruments, integrating hardware sensors, motorized stages,
+      and controllers. Operated in a fast-paced **Agile/Scrum** deep-tech environment,
+      delivering rapid feature cycles and high operational reliability during laboratory
+      assays. Developed real-time telemetry and diagnostic modules, improving instrument
+      uptime and analytical workflow throughput.
+    period: Mar - Dec 2024
+    role: Software Developer 💻
+  - bullets:
+    - Instructed over **100+ students and professionals** in full-stack web fundamentals,
+      3D printing, CAD modeling, and digital fabrication techniques.
+    - Managed FabLab machine infrastructure (FDM/Resin 3D printers, laser cutters,
+      CNC milling), ensuring preventive maintenance and safety standards.
+    - Cultivated leadership and technical communication skills by transforming complex
+      engineering concepts into hands-on learning modules.
+    company: Officina Immaginata S.R.L. & FabLab Imola
+    description: Instructed over **100+ students and professionals** in full-stack
+      web fundamentals, 3D printing, CAD modeling, and digital fabrication techniques.
+      Managed FabLab machine infrastructure (FDM/Resin 3D printers, laser cutters,
+      CNC milling), ensuring preventive maintenance and safety standards. Cultivated
+      leadership and technical communication skills by transforming complex engineering
+      concepts into hands-on learning modules.
+    period: 2021 - 2023
+    role: Digital Skills Trainer & Maker 📚
+  - bullets:
+    - Conducted functional, usability, and regression testing on high-traffic national
+      educational platforms, pinpointing critical bugs prior to production release.
+    - Authored comprehensive QA defect reports and User Experience (UX) audits, collaborating
+      closely with development teams to optimize usability.
+    company: Zanichelli S.p.a.
+    description: Conducted functional, usability, and regression testing on high-traffic
+      national educational platforms, pinpointing critical bugs prior to production
+      release. Authored comprehensive QA defect reports and User Experience (UX) audits,
+      collaborating closely with development teams to optimize usability.
+    period: 2019 - 2020
+    role: Software Quality Assurance & Tester 🛠️
+  footer: I hereby authorize the processing of my personal data pursuant to EU Regulation
+    2016/679 (GDPR) for recruitment and employment purposes.
+  headings:
+    education: EDUCATION
+    experience: WORK EXPERIENCE
+    languages: LANGUAGES
+    profile: PROFESSIONAL SUMMARY
+    projects: SELECTED PROJECTS
+    skills: TECHNICAL SKILLS
+    volunteer: LEADERSHIP & VOLUNTEERING
+  languages:
+  - lang: Italian
+    level: Native Speaker
+  - lang: English
+    level: C1 Advanced (International academic and research coursework in FR, SE,
+      PT)
+  profile: AI Engineer and Master's candidate with a robust international research
+    background (France, Sweden, Portugal) specializing in Deep Learning, Generative AI,
+    and model latency optimization. Hands-on experience researching text-to-image
+    diffusion models, implementing advanced similarity caching techniques to slash
+    computational cost and inference latency. Combining rigorous scientific reasoning,
+    clean software craftsmanship, and rapid adaptability in agile deep-tech startup
+    settings. Driven to deliver tangible, high-throughput impact across production-grade
+    AI systems.
+  projects:
+  - description: Experimental framework benchmarking KV & feature caching across denoising
+      iterations in high-throughput text-to-image pipelines.
+    link: github.com/alexrossi
+    name: Similarity Caching for Diffusion Models
+    tech: PyTorch, Stable Diffusion, DiT
+  - description: Real-time multi-agent player and ball tracking from broadcast footage
+      with planar homography field projection.
+    link: github.com/alexrossi
+    name: Computer Vision Basketball Tracker
+    tech: Python, OpenCV, YOLO, PyTorch
+  skills:
+  - category: Programming Languages
+    items: Python (Advanced), C/C++, Java, SQL, Prolog, Bash
+  - category: AI & Machine Learning
+    items: PyTorch, Generative AI (Diffusion Models), TensorFlow, Scikit-learn, OpenCV,
+      Hugging Face, Pandas, NumPy, Spark
+  - category: DevOps & Infrastructure
+    items: Git, GitHub Actions, Docker, Linux (Ubuntu/Debian), Visual Studio Code,
+      Jupyter, CI/CD
+  - category: Prototyping & Hardware
+    items: 3D Printing (FDM/SLA), 3D CAD Modeling, Digital Fabrication, HW/SW Integration
+  volunteer: Active Scout leader and educator (2008–2022), leading community logistics
+    and youth education initiatives. Athlete and youth coach (2007–2024), focusing on
+    team synergy, leadership, and athletic mentorship. Long-time maker and workshop
+    trainer (2020–2023), driving local digital fabrication and open-source tech initiatives.
+it:
+  education:
+  - degree: Laurea Magistrale in Artificial Intelligence
+    details: Focus su Deep Learning, Generative AI, Computer Vision e Sistemi Distribuiti.
+    institution: Università di Bologna
+    period: 2023 - Presente
+  - degree: Tirocinio di Tesi Magistrale in Generative AI
+    details: Ricerca su strategie di caching e ottimizzazione di modelli di diffusione
+      text-to-image.
+    institution: Université Côte d'Azur / INRIA 🇫🇷
+    period: Mar - Ago 2025
+  - degree: Erasmus per studio in Computer Science
+    details: Approfondimento in algoritmi avanzati e sistemi intelligenti.
+    institution: Linköping University 🇸🇪
+    period: Gen - Mag 2025
+  - degree: Erasmus per studio in Data Science
+    details: Focus su modellazione statistica e data analytics predittiva.
+    institution: Instituto Universitário de Lisboa (ISCTE) 🇵🇹
+    period: Feb - Lug 2024
+  - degree: Laurea Triennale in Ingegneria e Scienze Informatiche
+    details: 'Tesi sperimentale: Computer Vision e Deep Learning per il tracking nel
+      basket.'
+    institution: Università di Bologna 🎓
+    period: 2020 - 2023
+  - degree: Diploma Liceo Scientifico Scienze Applicate
+    details: Formazione scientifica, informatica e computazionale.
+    institution: Liceo Scientifico Alberghetti 🎓
+    period: 2015 - 2020
+  experience:
+  - bullets:
+    - Implementate e testate strategie di **similarity caching** su pipeline di diffusione
+      text-to-image, riducendo le valutazioni ridondanti del denoiser e tagliando
+      la latenza fino al **35%**.
+    - Condotta un'analisi quantitativa sistematica dei trade-off tra costo computazionale
+      (FLOPs, tempo per step) e qualità percettiva dell'immagine (FID, CLIP score).
+    - Sviluppato codice sperimentale in **PyTorch** ad alta efficienza, collegando
+      l'indagine teorica in GenAI a benchmark riproducibili per deployment scalabili.
+    company: INRIA - National Institute for Research in Digital Science
+    description: Implementate e testate strategie di **similarity caching** su pipeline
+      di diffusione text-to-image, riducendo le valutazioni ridondanti del denoiser
+      e tagliando la latenza fino al **35%**. Condotta un'analisi quantitativa sistematica
+      dei trade-off tra costo computazionale (FLOPs, tempo per step) e qualità percettiva
+      dell'immagine (FID, CLIP score). Sviluppato codice sperimentale in **PyTorch**
+      ad alta efficienza, collegando l'indagine teorica in GenAI a benchmark riproducibili
+      per deployment scalabili.
+    period: Mar - Ago 2025
+    role: Tirocinio di Ricerca in Generative AI 🔬
+  - bullets:
+    - Progettato e manutenuto software in **Python** per il controllo automatico di
+      complessi macchinari biotech proprietari, integrando sensori, motori e moduli
+      hardware.
+    - Collaborato in un team multidisciplinare con metodologia **Agile/Scrum**, garantendo
+      rilasci software rapidi e alta affidabilità operativa nei test di laboratorio.
+    - Sviluppate routine di acquisizione dati in tempo reale e diagnostica integrata,
+      riducendo i tempi di fermo macchina.
+    company: CellDynamics I.S.R.L.
+    description: Progettato e manutenuto software in **Python** per il controllo automatico
+      di complessi macchinari biotech proprietari, integrando sensori, motori e moduli
+      hardware. Collaborato in un team multidisciplinare con metodologia **Agile/Scrum**,
+      garantendo rilasci software rapidi e alta affidabilità operativa nei test di
+      laboratorio. Sviluppate routine di acquisizione dati in tempo reale e diagnostica
+      integrata, riducendo i tempi di fermo macchina.
+    period: Mar - Dic 2024
+    role: Software Developer 💻
+  - bullets:
+    - Docente per oltre **100 partecipanti** su sviluppo web, stampa 3D, fabbricazione
+      digitale e prototipazione rapida.
+    - Gestito il parco macchine del FabLab (stampanti 3D FDM/Resina, macchine laser,
+      CNC), garantendo manutenzione preventiva e protocolli di sicurezza.
+    - Consolidate spiccate capacità comunicative, traducendo concetti ingegneristici
+      complessi in lezioni pratiche e accessibili.
+    company: Officina Immaginata S.R.L. & FabLab Imola
+    description: Docente per oltre **100 partecipanti** su sviluppo web, stampa 3D,
+      fabbricazione digitale e prototipazione rapida. Gestito il parco macchine del
+      FabLab (stampanti 3D FDM/Resina, macchine laser, CNC), garantendo manutenzione
+      preventiva e protocolli di sicurezza. Consolidate spiccate capacità comunicative,
+      traducendo concetti ingegneristici complessi in lezioni pratiche e accessibili.
+    period: 2021 - 2023
+    role: Formatore in Competenze Digitali & Maker 📚
+  - bullets:
+    - Eseguito testing funzionale e di regressione su piattaforme e-learning scolastiche
+      ad alto traffico nazionale, isolando bug critici prima del rilascio.
+    - Redatti report di qualità (QA) e analisi User Experience (UX), collaborando
+      a stretto contatto con gli sviluppatori per ottimizzare i flussi d'uso.
+    company: Zanichelli S.p.a.
+    description: Eseguito testing funzionale e di regressione su piattaforme e-learning
+      scolastiche ad alto traffico nazionale, isolando bug critici prima del rilascio.
+      Redatti report di qualità (QA) e analisi User Experience (UX), collaborando
+      a stretto contatto con gli sviluppatori per ottimizzare i flussi d'uso.
+    period: 2019 - 2020
+    role: Software Quality Assurance & Tester 🛠️
+  footer: Autorizzo il trattamento dei miei dati personali ai sensi del Regolamento
+    UE 2016/679 (GDPR) per finalità di selezione e assunzione.
+  headings:
+    education: ISTRUZIONE
+    experience: ESPERIENZE LAVORATIVE
+    languages: COMPETENZE LINGUISTICHE
+    profile: PROFILO
+    projects: PROGETTI SELEZIONATI
+    skills: COMPETENZE TECNICHE
+    volunteer: ASSOCIAZIONI E VOLONTARIATO
+  languages:
+  - lang: Italiano
+    level: Madrelingua
+  - lang: Inglese
+    level: C1 Avanzato (Studi accademici internazionali in FR, SE, PT)
+  profile: Ingegnere AI e studente magistrale con un solido percorso internazionale
+    (Francia, Svezia, Portogallo) focalizzato su Deep Learning, Generative AI e ottimizzazione
+    di modelli. Esperienza diretta nella ricerca su modelli di diffusione text-to-image,
+    implementando tecniche avanzate di similarity caching per abbattere costi computazionali
+    e latenze di inferenza. Coniugo rigore scientifico, passione per il codice pulito
+    e comprovata capacità di rapido adattamento a workflow agili e startup deep-tech.
+    Motivato a portare impatto misurabile nello sviluppo e deployment di soluzioni
+    AI all'avanguardia.
+  projects:
+  - description: Framework sperimentale per il caching e riutilizzo di attivazioni
+      negli step di denoising di modelli generativi text-to-image.
+    link: github.com/alexrossi
+    name: Similarity Caching for Diffusion Models
+    tech: PyTorch, Stable Diffusion, DiT
+  - description: Sistema di tracking multi-oggetto in tempo reale di giocatori e palla
+      da flussi video con proiezione prospettica sul campo.
+    link: github.com/alexrossi
+    name: Computer Vision Basketball Tracker
+    tech: Python, OpenCV, YOLO, PyTorch
+  skills:
+  - category: Linguaggi di Programmazione
+    items: Python (Avanzato), C/C++, Java, SQL, Prolog, Bash
+  - category: AI & Machine Learning
+    items: PyTorch, Generative AI (Diffusion Models), TensorFlow, Scikit-learn, OpenCV,
+      Hugging Face, Pandas, NumPy, Spark
+  - category: DevOps & Strumenti
+    items: Git, GitHub Actions, Docker, Linux (Ubuntu/Debian), Visual Studio Code,
+      Jupyter, CI/CD
+  - category: Prototipazione & Hardware
+    items: Stampa 3D (FDM/SLA), Modellazione CAD 3D, Fabbricazione Digitale, Integrazione
+      HW/SW
+  volunteer: Membro ed educatore scout (2008–2022), responsabile della logistica e
+    della gestione di progetti comunitari. Atleta e allenatore giovanile (2007–2024),
+    con forte enfasi su leadership, spirito di squadra, disciplina e inclusione sociale.
+    Membro e formatore attivo FabLab (2020–2023), animatore di workshop maker e progetti
+    di innovazione territoriale.
+personal:
+  email: alex.rossi@example.com
+  github: github.com/alexrossi
+  headline:
+    en: AI Engineer & Generative AI Researcher
+    it: AI Engineer & Generative AI Researcher
+  location: Bologna, Italy
+  name: ALEX ROSSI
+  phone: +39 012 345 6789

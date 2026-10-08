@@ -1,0 +1,27 @@
+# Virtual Environment & Python cache
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+ENV/
+
+# Streamlit
+.streamlit/secrets.toml
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Output PDFs
+cv*.pdf
+test*.pdf
+*.pdf
+src/t_*.typ
+data/sessions/
+pietro_*.*
+my_*.*
+*.private.*

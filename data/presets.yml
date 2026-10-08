@@ -1,0 +1,114 @@
+# Curated Professional Color & Typography Presets for Typst CV
+
+palettes:
+  vibrant_duo:
+    name: "Vibrant Duo (Cyan & Violet)"
+    tag: "Creative & Distinctive"
+    colors:
+      left_bg: "#6FE3FF"
+      right_bg: "#A380FF"
+      primary: "#0F172A"
+      accent: "#7C3AED"
+      text_main: "#1E293B"
+      text_muted: "#475569"
+      line_color: "#CBD5E1"
+      chip_bg: "#F1F5F9"
+      chip_border: "#CBD5E1"
+      sidebar_bg: "#0F172A"
+      sidebar_text: "#F8FAFC"
+      sidebar_muted: "#94A3B8"
+      sidebar_accent: "#6FE3FF"
+
+  nordic_slate:
+    name: "Nordic Slate (Tech & AI)"
+    tag: "Modern European Tech"
+    colors:
+      left_bg: "#0F172A"
+      right_bg: "#0284C7"
+      primary: "#0F172A"
+      accent: "#0284C7"
+      text_main: "#1E293B"
+      text_muted: "#64748B"
+      line_color: "#E2E8F0"
+      chip_bg: "#F8FAFC"
+      chip_border: "#CBD5E1"
+      sidebar_bg: "#0F172A"
+      sidebar_text: "#F8FAFC"
+      sidebar_muted: "#94A3B8"
+      sidebar_accent: "#38BDF8"
+
+  electric_indigo:
+    name: "Electric Indigo (GenAI Pioneer)"
+    tag: "High Impact & Modern"
+    colors:
+      left_bg: "#312E81"
+      right_bg: "#6366F1"
+      primary: "#1E1B4B"
+      accent: "#4F46E5"
+      text_main: "#1E293B"
+      text_muted: "#64748B"
+      line_color: "#E0E7FF"
+      chip_bg: "#EEF2FF"
+      chip_border: "#C7D2FE"
+      sidebar_bg: "#1E1B4B"
+      sidebar_text: "#EEF2FF"
+      sidebar_muted: "#A5B4FC"
+      sidebar_accent: "#818CF8"
+
+  deep_emerald:
+    name: "Deep Emerald (DeepTech & Biotech)"
+    tag: "Clean & Sophisticated"
+    colors:
+      left_bg: "#064E3B"
+      right_bg: "#10B981"
+      primary: "#064E3B"
+      accent: "#059669"
+      text_main: "#1E293B"
+      text_muted: "#4B5563"
+      line_color: "#D1FAE5"
+      chip_bg: "#ECFDF5"
+      chip_border: "#A7F3D0"
+      sidebar_bg: "#064E3B"
+      sidebar_text: "#F0FDF4"
+      sidebar_muted: "#A7F3D0"
+      sidebar_accent: "#34D399"
+
+  monochrome_ats:
+    name: "Pure Monochrome (Minimal Clean)"
+    tag: "Strict Professional / Formal"
+    colors:
+      left_bg: "#18181B"
+      right_bg: "#27272A"
+      primary: "#09090B"
+      accent: "#27272A"
+      text_main: "#18181B"
+      text_muted: "#52525B"
+      line_color: "#E4E4E7"
+      chip_bg: "#F4F4F5"
+      chip_border: "#D4D4D8"
+      sidebar_bg: "#18181B"
+      sidebar_text: "#FAFAFA"
+      sidebar_muted: "#A1A1AA"
+      sidebar_accent: "#E4E4E7"
+
+templates_meta:
+  split_header:
+    name: "Split Header (Bicolore Moderno)"
+    description: "Layout distintivo con header bicolore, avatar rotondo centrale e corpo bilanciato su 2 colonne."
+    recommended_palette: "vibrant_duo"
+    supports_photo: true
+  modern_tech:
+    name: "Modern Tech / AI Resume"
+    description: "Layout a colonna singola pulito, ad alto impatto visivo e massima leggibilità."
+    recommended_palette: "nordic_slate"
+    supports_photo: true
+  academic_research:
+    name: "Academic & Research Lab"
+    description: "Tipografia accademica essenziale, ideale per laboratori di ricerca (INRIA, Max Planck), posizioni PhD e borse di studio."
+    recommended_palette: "monochrome_ats"
+    supports_photo: false
+  nordic_sidebar:
+    name: "Nordic Sidebar (Executive Tech)"
+    description: "Sidebar laterale per anagrafica, contatti, skill e lingue con ampia colonna per timeline di esperienze."
+    recommended_palette: "nordic_slate"
+    supports_photo: true
