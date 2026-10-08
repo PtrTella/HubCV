@@ -25,3 +25,4 @@ data/sessions/
 pietro_*.*
 my_*.*
 *.private.*
+.agents/
