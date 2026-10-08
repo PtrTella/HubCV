@@ -2,9 +2,10 @@
 
 #let render(data) = [
   #let lang = data.config.at("lang", default: "it")
-  #let content = data.at(lang)
-  #let personal = data.personal
+  #let content = data.at(lang, default: (:))
+  #let personal = data.at("personal", default: (:))
   #let colors = data.config.at("colors", default: (:))
+  #let headings = content.at("headings", default: (:))
 
   #let sidebar-bg = parse-color(colors.at("sidebar_bg", default: "#0F172A"))
   #let sidebar-text = parse-color(colors.at("sidebar_text", default: "#F8FAFC"))
@@ -17,7 +18,9 @@
   #let main-muted = parse-color(colors.at("text_muted", default: "#64748B"))
   #let line-color = parse-color(colors.at("line_color", default: "#E2E8F0"))
 
-  #let font-family = data.config.at("font_family", default: "Helvetica")
+  #let pref-font = data.config.at("font_family", default: "Helvetica")
+  #let font-family = (pref-font, "Helvetica", "Arial", "Liberation Sans", "DejaVu Sans", "sans-serif")
+
   #let font-size = parse-length(data.config.at("font_size", default: 8.5pt), default: 8.5pt)
   #let line-spacing = parse-length(data.config.at("line_spacing", default: 0.46em), default: 0.46em)
   #let section-spacing = parse-length(data.config.at("section_spacing", default: 4pt), default: 4pt)
@@ -29,10 +32,10 @@
 
   // Relative typography scale derived from font_size slider
   #let base-size = font-size
-  #let size-name = base-size * 1.55
-  #let size-section = base-size * 1.22
+  #let size-name = base-size * 1.50
+  #let size-section = base-size * 1.20
   #let size-role = base-size * 1.05
-  #let size-sub = base-size * 0.96
+  #let size-sub = base-size * 0.95
   #let size-small = base-size * 0.88
   #let size-tiny = base-size * 0.80
 
@@ -58,111 +61,136 @@
         #let photo-path = data.config.at("photo_path", default: "/assets/profile.png")
         #align(center)[
           #box(
-            width: 2.8cm,
-            height: 2.8cm,
+            width: 2.7cm,
+            height: 2.7cm,
             radius: 50%,
-            stroke: 2pt + sidebar-accent,
+            stroke: 2.5pt + sidebar-accent,
             clip: true,
             image(photo-path, width: 100%, height: 100%, fit: "cover")
           )
         ]
-        #v(4pt)
+        #v(3pt)
       ]
 
       // Name & Headline
       #align(center)[
         #set text(hyphenate: false)
+        #let raw-name = personal.at("name", default: "")
+        #let parts = if raw-name != "" { raw-name.split(" ") } else { () }
         #text(size: size-name, weight: "bold", fill: sidebar-text)[
-          #let parts = personal.name.split(" ")
           #if parts.len() >= 2 [
             #parts.at(0)\
             #parts.slice(1).join(" ")
+          ] else if parts.len() == 1 [
+            #parts.at(0)
           ] else [
-            #personal.name
+            CV Studio
           ]
         ]\
-        #v(2pt)
-        #let hl = if type(personal.headline) == dictionary { personal.headline.at(lang, default: "AI Engineer") } else { str(personal.headline) }
-        #text(size: size-sub, weight: "medium", fill: sidebar-accent)[#hl]
+        #v(1.5pt)
+        #let raw-hl = personal.at("headline", default: "")
+        #let hl = if type(raw-hl) == dictionary { raw-hl.at(lang, default: "") } else { str(raw-hl) }
+        #if hl != "" [
+          #text(size: size-sub, weight: "medium", fill: sidebar-accent)[#hl]
+        ]
       ]
       
-      #v(6pt)
-      #line(length: 100%, stroke: 0.5pt + sidebar-muted)
       #v(5pt)
+      #line(length: 100%, stroke: 0.5pt + sidebar-muted)
+      #v(4pt)
 
       // Contacts
-      #text(size: size-sub, weight: "bold", fill: sidebar-accent)[CONTATTI]\
-      #v(3pt)
-      #grid(
-        columns: (12pt, 1fr),
-        gutter: 4pt,
-        align: (center + horizon, left + horizon),
-        [✉], [#link("mailto:" + personal.email)[#text(size: size-small, fill: sidebar-text)[#personal.email]]],
-        [☎], [#link("tel:" + personal.phone)[#text(size: size-small, fill: sidebar-text)[#personal.phone]]],
-        [⌥], [#link("https://" + personal.github)[#text(size: size-small, fill: sidebar-text)[#personal.github]]],
-        [⌖], [#text(size: size-small, fill: sidebar-text)[#personal.location]]
-      )
-      
-      #v(8pt)
+      #let contact-rows = ()
+      #if personal.at("email", default: "") != "" {
+        contact-rows.push([✉])
+        contact-rows.push([#link("mailto:" + personal.email)[#text(size: size-small, fill: sidebar-text)[#personal.email]]])
+      }
+      #if personal.at("phone", default: "") != "" {
+        contact-rows.push([☎])
+        contact-rows.push([#link("tel:" + personal.phone)[#text(size: size-small, fill: sidebar-text)[#personal.phone]]])
+      }
+      #if personal.at("github", default: "") != "" {
+        contact-rows.push([⌥])
+        contact-rows.push([#link("https://" + personal.github.replace("https://", ""))[#text(size: size-small, fill: sidebar-text)[#personal.github]]])
+      }
+      #if personal.at("location", default: "") != "" {
+        contact-rows.push([⌖])
+        contact-rows.push([#text(size: size-small, fill: sidebar-text)[#personal.location]])
+      }
+
+      #if contact-rows.len() > 0 [
+        #text(size: size-sub, weight: "bold", fill: sidebar-accent)[#upper(headings.at("contacts", default: "CONTATTI"))]\
+        #v(2.5pt)
+        #grid(
+          columns: (12pt, 1fr),
+          gutter: 3.5pt,
+          align: (center + horizon, left + horizon),
+          ..contact-rows
+        )
+        #v(6pt)
+      ]
 
       // Technical Skills
-      #if "skills" in content and content.skills.len() > 0 [
-        #text(size: size-sub, weight: "bold", fill: sidebar-accent)[#upper(content.headings.skills)]\
-        #v(3pt)
-        #for sk in content.skills [
-          #text(size: size-small, weight: "bold", fill: sidebar-accent)[#sk.category]\
+      #let skill-list = content.at("skills", default: ())
+      #if skill-list.len() > 0 [
+        #text(size: size-sub, weight: "bold", fill: sidebar-accent)[#upper(headings.at("skills", default: "COMPETENZE"))]\
+        #v(2.5pt)
+        #for sk in skill-list [
+          #text(size: size-small, weight: "bold", fill: sidebar-accent)[#sk.at("category", default: "")]\
           #v(1.5pt)
-          #let items = if type(sk.items) == str { sk.items.split(",") } else { sk.items }
+          #let raw-items = sk.at("items", default: "")
+          #let items = if type(raw-items) == str { raw-items.split(",") } else { raw-items }
           #for item in items [
-            #let trimmed = item.trim()
+            #let trimmed = str(item).trim()
             #if trimmed != "" [
-              #skill-chip(trimmed, bg: rgb(255, 255, 255, 12%), stroke: rgb(255, 255, 255, 25%), text-color: rgb("FFFFFF"), font-size: size-tiny)
+              #skill-chip(trimmed, bg: rgb(255, 255, 255, 14%), stroke: rgb(255, 255, 255, 25%), text-color: sidebar-text, font-size: size-tiny)
               #h(1.5pt)
             ]
           ]
-          #v(3pt)
+          #v(2.5pt)
         ]
-        #v(5pt)
+        #v(4pt)
       ]
 
       // Languages
-      #if "languages" in content and content.languages.len() > 0 [
-        #text(size: size-sub, weight: "bold", fill: sidebar-accent)[#upper(content.headings.languages)]\
-        #v(3pt)
-        #for l in content.languages [
-          #text(size: size-small, weight: "semibold", fill: sidebar-text)[• #l.lang:]
-          #text(size: size-tiny, fill: sidebar-muted)[ #l.level]\
+      #let lang-list = content.at("languages", default: ())
+      #if lang-list.len() > 0 [
+        #text(size: size-sub, weight: "bold", fill: sidebar-accent)[#upper(headings.at("languages", default: "LINGUE"))]\
+        #v(2.5pt)
+        #for l in lang-list [
+          #text(size: size-small, weight: "semibold", fill: sidebar-text)[• #l.at("lang", default: ""):]
+          #text(size: size-tiny, fill: sidebar-muted)[ #l.at("level", default: "")]\
         ]
       ]
     ]
   ]
 
-  // ==================== MAIN COLUMN BODY (NATURAL DOCUMENT FLOW) ====================
+  // ==================== MAIN COLUMN BODY ====================
   // Professional Summary
-  #if "profile" in content and content.profile != "" [
-    #section-title-modern(content.headings.profile, accent-color: main-primary, line-color: line-color, size: size-section, spacing: section-spacing)
-    #text(size: size-small)[#content.profile]
+  #let profile-text = content.at("profile", default: "")
+  #if profile-text != "" [
+    #section-title-modern(headings.at("profile", default: "PROFILO"), accent-color: main-primary, line-color: line-color, size: size-section, spacing: section-spacing)
+    #text(size: size-small)[#profile-text]
     #v(section-spacing)
   ]
 
   // Work Experience
-  #if "experience" in content and content.experience.len() > 0 [
-    #section-title-modern(content.headings.experience, accent-color: main-primary, line-color: line-color, size: size-section, spacing: section-spacing)
-    #for exp in content.experience [
-      #block(width: 100%, inset: (bottom: section-spacing * 0.7))[
+  #let exp-list = content.at("experience", default: ())
+  #if exp-list.len() > 0 [
+    #section-title-modern(headings.at("experience", default: "ESPERIENZE"), accent-color: main-primary, line-color: line-color, size: size-section, spacing: section-spacing)
+    #for exp in exp-list [
+      #block(width: 100%, inset: (bottom: section-spacing * 0.6))[
         #grid(
           columns: (1fr, auto),
-          [
-            #text(size: size-role, weight: "bold", fill: main-primary)[#exp.role]
-            #text(size: size-sub, weight: "medium", fill: main-accent)[ — #exp.company]
-          ],
-          [
-            #text(size: size-small, fill: main-muted)[#exp.period]
-          ]
+          gutter: 6pt,
+          [#text(size: size-role, weight: "bold", fill: main-primary)[#exp.at("role", default: "")]],
+          [#text(size: size-small, fill: main-muted)[#exp.at("period", default: "")]]
         )
+        #text(size: size-sub, weight: "semibold", fill: main-accent)[#exp.at("company", default: "")]\
         #v(1pt)
-        #if "bullets" in exp and exp.bullets.len() > 0 [
-          #for b in exp.bullets [
+        #let bullets = exp.at("bullets", default: ())
+        #if bullets.len() > 0 [
+          #for b in bullets [
             #grid(
               columns: (7pt, 1fr),
               gutter: 0pt,
@@ -171,7 +199,7 @@
             )
             #v(0.6pt)
           ]
-        ] else [
+        ] else if exp.at("description", default: "") != "" [
           #text(size: size-small, fill: main-text)[#exp.description]
         ]
       ]
@@ -180,34 +208,47 @@
   ]
 
   // Selected Projects
-  #if "projects" in content and content.projects.len() > 0 [
-    #section-title-modern(content.headings.at("projects", default: "PROGETTI"), accent-color: main-primary, line-color: line-color, size: size-section, spacing: section-spacing)
-    #for proj in content.projects [
+  #let proj-list = content.at("projects", default: ())
+  #if proj-list.len() > 0 [
+    #section-title-modern(headings.at("projects", default: "PROGETTI"), accent-color: main-primary, line-color: line-color, size: size-section, spacing: section-spacing)
+    #for proj in proj-list [
       #block(width: 100%, inset: (bottom: section-spacing * 0.6))[
-        #text(size: size-sub, weight: "bold", fill: main-primary)[#proj.name]
-        #if "tech" in proj [#text(size: size-small, fill: main-accent)[ — #proj.tech]]\
-        #text(size: size-small, fill: main-text)[#proj.description]
+        #grid(
+          columns: (1fr, auto),
+          gutter: 6pt,
+          [
+            #text(size: size-sub, weight: "bold", fill: main-primary)[#proj.at("name", default: "")]
+            #if proj.at("tech", default: "") != "" [#text(size: size-small, fill: main-accent)[ — #proj.tech]]
+          ],
+          [
+            #if proj.at("link", default: "") != "" [
+              #text(size: size-tiny, fill: main-muted)[#proj.link]
+            ]
+          ]
+        )
+        #if proj.at("description", default: "") != "" [
+          #v(0.5pt)
+          #text(size: size-small, fill: main-text)[#proj.description]
+        ]
       ]
     ]
     #v(section-spacing)
   ]
 
   // Education
-  #if "education" in content and content.education.len() > 0 [
-    #section-title-modern(content.headings.education, accent-color: main-primary, line-color: line-color, size: size-section, spacing: section-spacing)
-    #for edu in content.education [
+  #let edu-list = content.at("education", default: ())
+  #if edu-list.len() > 0 [
+    #section-title-modern(headings.at("education", default: "ISTRUZIONE"), accent-color: main-primary, line-color: line-color, size: size-section, spacing: section-spacing)
+    #for edu in edu-list [
       #block(width: 100%, inset: (bottom: section-spacing * 0.6))[
         #grid(
           columns: (1fr, auto),
-          [
-            #text(size: size-sub, weight: "bold", fill: main-primary)[#edu.degree]
-            #text(size: size-small, fill: main-accent)[ — #edu.institution]
-          ],
-          [
-            #text(size: size-small, fill: main-muted)[#edu.period]
-          ]
+          gutter: 6pt,
+          [#text(size: size-sub, weight: "bold", fill: main-primary)[#edu.at("degree", default: "")]],
+          [#text(size: size-small, fill: main-muted)[#edu.at("period", default: "")]]
         )
-        #if "details" in edu and edu.details != "" [
+        #text(size: size-small, fill: main-accent)[#edu.at("institution", default: "")]\
+        #if edu.at("details", default: "") != "" [
           #text(size: size-small, fill: main-muted, style: "italic")[#edu.details]
         ]
       ]
@@ -216,16 +257,18 @@
   ]
 
   // Volunteering
-  #if "volunteer" in content and content.volunteer != "" [
-    #section-title-modern(content.headings.volunteer, accent-color: main-primary, line-color: line-color, size: size-section, spacing: section-spacing)
-    #text(size: size-small, fill: main-text)[#content.volunteer]
+  #let vol-text = content.at("volunteer", default: "")
+  #if vol-text != "" [
+    #section-title-modern(headings.at("volunteer", default: "VOLONTARIATO"), accent-color: main-primary, line-color: line-color, size: size-section, spacing: section-spacing)
+    #text(size: size-small, fill: main-text)[#vol-text]
   ]
 
   // GDPR Footer
-  #if show-gdpr and "footer" in content and content.footer != "" [
-    #v(1fr)
+  #let footer-text = content.at("footer", default: "")
+  #if show-gdpr and footer-text != "" [
+    #v(section-spacing * 1.5)
     #align(center)[
-      #text(size: size-tiny, fill: main-muted)[#content.footer]
+      #text(size: size-tiny, fill: main-muted)[#footer-text]
     ]
   ]
 ]

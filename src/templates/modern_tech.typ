@@ -2,9 +2,10 @@
 
 #let render(data) = [
   #let lang = data.config.at("lang", default: "it")
-  #let content = data.at(lang)
-  #let personal = data.personal
+  #let content = data.at(lang, default: (:))
+  #let personal = data.at("personal", default: (:))
   #let colors = data.config.at("colors", default: (:))
+  #let headings = content.at("headings", default: (:))
   
   // Color palette defaults
   #let primary-color = parse-color(colors.at("primary", default: "#0F172A"))
@@ -15,23 +16,25 @@
   #let chip-bg = parse-color(colors.at("chip_bg", default: "#F8FAFC"))
   #let chip-border = parse-color(colors.at("chip_border", default: "#CBD5E1"))
   
-  #let font-family = data.config.at("font_family", default: "Helvetica")
-  #let font-size = parse-length(data.config.at("font_size", default: 9.0pt), default: 9.0pt)
-  #let line-spacing = parse-length(data.config.at("line_spacing", default: 0.50em), default: 0.50em)
-  #let section-spacing = parse-length(data.config.at("section_spacing", default: 5pt), default: 5pt)
-  #let margin-y = parse-length(data.config.at("margin_y", default: 1.0cm), default: 1.0cm)
-  #let margin-x = parse-length(data.config.at("margin_x", default: 1.3cm), default: 1.3cm)
+  #let pref-font = data.config.at("font_family", default: "Helvetica")
+  #let font-family = (pref-font, "Helvetica", "Arial", "Liberation Sans", "DejaVu Sans", "sans-serif")
+
+  #let font-size = parse-length(data.config.at("font_size", default: 8.5pt), default: 8.5pt)
+  #let line-spacing = parse-length(data.config.at("line_spacing", default: 0.46em), default: 0.46em)
+  #let section-spacing = parse-length(data.config.at("section_spacing", default: 4pt), default: 4pt)
+  #let margin-y = parse-length(data.config.at("margin_y", default: 0.9cm), default: 0.9cm)
+  #let margin-x = parse-length(data.config.at("margin_x", default: 1.2cm), default: 1.2cm)
 
   #let show-photo = data.config.at("show_photo", default: false)
   #let show-gdpr = data.config.at("show_gdpr", default: true)
 
   // Relative typography scale derived from font_size slider
   #let base-size = font-size
-  #let size-name = base-size * 2.2
-  #let size-headline = base-size * 1.15
-  #let size-section = base-size * 1.25
+  #let size-name = base-size * 2.1
+  #let size-headline = base-size * 1.10
+  #let size-section = base-size * 1.22
   #let size-role = base-size * 1.05
-  #let size-sub = base-size * 0.98
+  #let size-sub = base-size * 0.96
   #let size-small = base-size * 0.88
   #let size-tiny = base-size * 0.80
   
@@ -52,23 +55,42 @@
       align: (left + horizon, right + horizon),
       [
         // Name & Title
-        #text(size: size-name, weight: "bold", fill: primary-color, tracking: -0.2pt)[#personal.name]
+        #let raw-name = personal.at("name", default: "")
+        #text(size: size-name, weight: "bold", fill: primary-color, tracking: -0.2pt)[
+          #if raw-name != "" { raw-name } else { [CV Studio] }
+        ]
         #v(-4pt)
-        #let hl = if type(personal.headline) == dictionary { personal.headline.at(lang, default: "AI Engineer & Generative AI Researcher") } else { str(personal.headline) }
-        #text(size: size-headline, weight: "medium", fill: accent-color)[#hl]
-        #v(3pt)
+        #let raw-hl = personal.at("headline", default: "")
+        #let hl = if type(raw-hl) == dictionary { raw-hl.at(lang, default: "") } else { str(raw-hl) }
+        #if hl != "" [
+          #text(size: size-headline, weight: "medium", fill: accent-color)[#hl]
+          #v(3pt)
+        ]
         
         // Contact details strip
-        #box[
-          #set text(size: size-small, fill: text-muted)
-          #grid(
-            columns: (auto, auto, auto, auto),
-            gutter: 10pt,
-            [#mini-icon("mail", fill: accent-color) #link("mailto:" + personal.email)[#personal.email]],
-            [#mini-icon("phone", fill: accent-color) #link("tel:" + personal.phone)[#personal.phone]],
-            [#mini-icon("github", fill: accent-color) #link("https://" + personal.github)[#personal.github]],
-            [#mini-icon("location", fill: accent-color) #personal.location]
-          )
+        #let contact-items = ()
+        #if personal.at("email", default: "") != "" {
+          contact-items.push([#mini-icon("mail", fill: accent-color) #link("mailto:" + personal.email)[#personal.email]])
+        }
+        #if personal.at("phone", default: "") != "" {
+          contact-items.push([#mini-icon("phone", fill: accent-color) #link("tel:" + personal.phone)[#personal.phone]])
+        }
+        #if personal.at("github", default: "") != "" {
+          contact-items.push([#mini-icon("github", fill: accent-color) #link("https://" + personal.github.replace("https://", ""))[#personal.github]])
+        }
+        #if personal.at("location", default: "") != "" {
+          contact-items.push([#mini-icon("location", fill: accent-color) #personal.location])
+        }
+
+        #if contact-items.len() > 0 [
+          #box[
+            #set text(size: size-small, fill: text-muted)
+            #grid(
+              columns: (auto,) * contact-items.len(),
+              gutter: 10pt,
+              ..contact-items
+            )
+          ]
         ]
       ],
       if show-photo [
@@ -90,26 +112,29 @@
   #v(2pt)
 
   // ==================== PROFILE SUMMARY ====================
-  #if "profile" in content and content.profile != "" [
-    #section-title-modern(content.headings.profile, accent-color: primary-color, line-color: line-color, size: size-section, spacing: section-spacing)
-    #text(size: size-small, fill: text-main)[#content.profile]
+  #let profile-text = content.at("profile", default: "")
+  #if profile-text != "" [
+    #section-title-modern(headings.at("profile", default: "PROFILO"), accent-color: primary-color, line-color: line-color, size: size-section, spacing: section-spacing)
+    #text(size: size-small, fill: text-main)[#profile-text]
     #v(section-spacing)
   ]
 
   // ==================== TECHNICAL SKILLS (CHIPS) ====================
-  #if "skills" in content and content.skills.len() > 0 [
-    #section-title-modern(content.headings.skills, accent-color: primary-color, line-color: line-color, size: size-section, spacing: section-spacing)
+  #let skill-list = content.at("skills", default: ())
+  #if skill-list.len() > 0 [
+    #section-title-modern(headings.at("skills", default: "COMPETENZE"), accent-color: primary-color, line-color: line-color, size: size-section, spacing: section-spacing)
     #grid(
       columns: (1fr, 1fr),
       column-gutter: 10pt,
       row-gutter: section-spacing * 0.6,
-      ..content.skills.map(sk => [
+      ..skill-list.map(sk => [
         #block(width: 100%)[
-          #text(size: size-sub, weight: "bold", fill: primary-color)[#sk.category]\
+          #text(size: size-sub, weight: "bold", fill: primary-color)[#sk.at("category", default: "")]\
           #v(1.5pt)
-          #let items = if type(sk.items) == str { sk.items.split(",") } else { sk.items }
+          #let raw-items = sk.at("items", default: "")
+          #let items = if type(raw-items) == str { raw-items.split(",") } else { raw-items }
           #for item in items [
-            #let trimmed = item.trim()
+            #let trimmed = str(item).trim()
             #if trimmed != "" [
               #skill-chip(trimmed, bg: chip-bg, stroke: chip-border, text-color: text-main, font-size: size-tiny)
               #h(2pt)
@@ -122,29 +147,34 @@
   ]
 
   // ==================== WORK EXPERIENCE ====================
-  #if "experience" in content and content.experience.len() > 0 [
-    #section-title-modern(content.headings.experience, accent-color: primary-color, line-color: line-color, size: size-section, spacing: section-spacing)
-    #for exp in content.experience [
+  #let exp-list = content.at("experience", default: ())
+  #if exp-list.len() > 0 [
+    #section-title-modern(headings.at("experience", default: "ESPERIENZE"), accent-color: primary-color, line-color: line-color, size: size-section, spacing: section-spacing)
+    #for exp in exp-list [
       #block(width: 100%, inset: (bottom: section-spacing * 0.7))[
         #grid(
           columns: (1fr, auto),
-          align: (left, right),
-          [#text(size: size-role, weight: "bold", fill: primary-color)[#exp.role]],
-          [#text(size: size-small, weight: "medium", fill: text-muted)[#exp.period]]
+          [
+            #text(size: size-role, weight: "bold", fill: primary-color)[#exp.at("role", default: "")]
+            #text(size: size-sub, weight: "medium", fill: accent-color)[ — #exp.at("company", default: "")]
+          ],
+          [
+            #text(size: size-small, fill: text-muted)[#exp.at("period", default: "")]
+          ]
         )
-        #text(size: size-sub, weight: "medium", fill: accent-color)[#exp.company]\
         #v(1pt)
-        #if "bullets" in exp and exp.bullets.len() > 0 [
-          #for b in exp.bullets [
+        #let bullets = exp.at("bullets", default: ())
+        #if bullets.len() > 0 [
+          #for b in bullets [
             #grid(
-              columns: (8pt, 1fr),
+              columns: (7pt, 1fr),
               gutter: 0pt,
               [#text(fill: accent-color, size: size-small)[•]],
               [#text(size: size-small, fill: text-main)[#format-markup(b)]]
             )
             #v(0.6pt)
           ]
-        ] else [
+        ] else if exp.at("description", default: "") != "" [
           #text(size: size-small, fill: text-main)[#exp.description]
         ]
       ]
@@ -153,23 +183,26 @@
   ]
 
   // ==================== SELECTED PROJECTS ====================
-  #if "projects" in content and content.projects.len() > 0 [
-    #section-title-modern(content.headings.at("projects", default: "PROGETTI"), accent-color: primary-color, line-color: line-color, size: size-section, spacing: section-spacing)
-    #for proj in content.projects [
+  #let proj-list = content.at("projects", default: ())
+  #if proj-list.len() > 0 [
+    #section-title-modern(headings.at("projects", default: "PROGETTI"), accent-color: primary-color, line-color: line-color, size: size-section, spacing: section-spacing)
+    #for proj in proj-list [
       #block(width: 100%, inset: (bottom: section-spacing * 0.6))[
         #grid(
           columns: (1fr, auto),
           [
-            #text(size: size-sub, weight: "bold", fill: primary-color)[#proj.name]
-            #if "tech" in proj [#text(size: size-small, fill: accent-color)[ — #proj.tech]]
+            #text(size: size-sub, weight: "bold", fill: primary-color)[#proj.at("name", default: "")]
+            #if proj.at("tech", default: "") != "" [#text(size: size-small, fill: accent-color)[ — #proj.tech]]
           ],
           [
-            #if "link" in proj [#text(size: size-small)[#link("https://" + proj.link)[#proj.link]]]
+            #if proj.at("link", default: "") != "" [
+              #text(size: size-tiny, fill: text-muted)[#mini-icon("link", fill: text-muted) #proj.link]
+            ]
           ]
         )
-        #if "description" in proj [
+        #if proj.at("description", default: "") != "" [
           #v(0.5pt)
-          #text(size: size-small, fill: text-main)[#format-markup(proj.description)]
+          #text(size: size-small, fill: text-main)[#proj.description]
         ]
       ]
     ]
@@ -177,18 +210,22 @@
   ]
 
   // ==================== EDUCATION ====================
-  #if "education" in content and content.education.len() > 0 [
-    #section-title-modern(content.headings.education, accent-color: primary-color, line-color: line-color, size: size-section, spacing: section-spacing)
-    #for edu in content.education [
+  #let edu-list = content.at("education", default: ())
+  #if edu-list.len() > 0 [
+    #section-title-modern(headings.at("education", default: "ISTRUZIONE"), accent-color: primary-color, line-color: line-color, size: size-section, spacing: section-spacing)
+    #for edu in edu-list [
       #block(width: 100%, inset: (bottom: section-spacing * 0.6))[
         #grid(
           columns: (1fr, auto),
-          align: (left, right),
-          [#text(size: size-sub, weight: "bold", fill: primary-color)[#edu.degree]],
-          [#text(size: size-small, weight: "medium", fill: text-muted)[#edu.period]]
+          [
+            #text(size: size-sub, weight: "bold", fill: primary-color)[#edu.at("degree", default: "")]
+            #text(size: size-small, fill: accent-color)[ — #edu.at("institution", default: "")]
+          ],
+          [
+            #text(size: size-small, fill: text-muted)[#edu.at("period", default: "")]
+          ]
         )
-        #text(size: size-small, fill: accent-color)[#edu.institution]\
-        #if "details" in edu and edu.details != "" [
+        #if edu.at("details", default: "") != "" [
           #v(0.5pt)
           #text(size: size-small, fill: text-muted, style: "italic")[#edu.details]
         ]
@@ -197,32 +234,37 @@
     #v(section-spacing)
   ]
 
-  // ==================== LANGUAGES & VOLUNTEERING ====================
-  #grid(
-    columns: (1fr, 1.2fr),
-    gutter: 14pt,
-    [
-      #if "languages" in content and content.languages.len() > 0 [
-        #section-title-modern(content.headings.languages, accent-color: primary-color, line-color: line-color, size: size-section, spacing: section-spacing)
-        #for l in content.languages [
-          #text(size: size-sub, weight: "medium", fill: primary-color)[#l.lang]
-          #text(size: size-small, fill: text-muted)[ — #l.level]\
+  // ==================== LANGUAGES & VOLUNTEERING (TWO COLUMN BOTTOM) ====================
+  #let lang-list = content.at("languages", default: ())
+  #let vol-text = content.at("volunteer", default: "")
+  #if lang-list.len() > 0 or vol-text != "" [
+    #grid(
+      columns: if lang-list.len() > 0 and vol-text != "" { (40%, 60%) } else { (100%) },
+      gutter: 14pt,
+      [
+        #if lang-list.len() > 0 [
+          #section-title-modern(headings.at("languages", default: "LINGUE"), accent-color: primary-color, line-color: line-color, size: size-section, spacing: section-spacing)
+          #for l in lang-list [
+            #text(size: size-sub, weight: "bold", fill: primary-color)[#l.at("lang", default: "")]
+            #text(size: size-small, fill: text-muted)[ - #l.at("level", default: "")]\
+          ]
+        ]
+      ],
+      [
+        #if vol-text != "" [
+          #section-title-modern(headings.at("volunteer", default: "VOLONTARIATO"), accent-color: primary-color, line-color: line-color, size: size-section, spacing: section-spacing)
+          #text(size: size-small, fill: text-main)[#vol-text]
         ]
       ]
-    ],
-    [
-      #if "volunteer" in content and content.volunteer != "" [
-        #section-title-modern(content.headings.volunteer, accent-color: primary-color, line-color: line-color, size: size-section, spacing: section-spacing)
-        #text(size: size-small, fill: text-main)[#content.volunteer]
-      ]
-    ]
-  )
+    )
+  ]
 
   // ==================== GDPR FOOTER ====================
-  #if show-gdpr and "footer" in content and content.footer != "" [
-    #v(1fr)
+  #let footer-text = content.at("footer", default: "")
+  #if show-gdpr and footer-text != "" [
+    #v(section-spacing * 1.5)
     #align(center)[
-      #text(size: size-tiny, fill: text-muted)[#content.footer]
+      #text(size: size-tiny, fill: text-muted)[#footer-text]
     ]
   ]
 ]
