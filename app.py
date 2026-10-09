@@ -252,6 +252,25 @@ templates_meta = presets_data.get("templates_meta", {})
 # Sanitize config
 cfg = sanitize_config(cv_data.setdefault("config", {}))
 
+EMOJI_REGEX = re.compile(
+    '['
+    '\U00010000-\U0010ffff'
+    '\u2600-\u27bf'
+    '\u2300-\u23ff'
+    '\u2b50'
+    ']+',
+    flags=re.UNICODE
+)
+
+def strip_emojis(data):
+    if isinstance(data, str):
+        return EMOJI_REGEX.sub('', data).strip()
+    elif isinstance(data, list):
+        return [strip_emojis(x) for x in data]
+    elif isinstance(data, dict):
+        return {k: strip_emojis(v) for k, v in data.items()}
+    return data
+
 # In-memory compiler
 def compile_session_pdf(data_dict, lang=None):
     if not HAS_TYPST:
@@ -262,12 +281,15 @@ def compile_session_pdf(data_dict, lang=None):
     if lang:
         active_cfg["lang"] = lang
     
-    save_yaml_file(session_yaml_abs, active_dict)
+    # Clean emojis to eliminate Type 3 bitmap fonts and ensure 100% vector ATS parseability
+    ats_clean_dict = strip_emojis(active_dict)
+    save_yaml_file(session_yaml_abs, ats_clean_dict)
     try:
         pdf_bytes = typst.compile(
             "src/cv.typ",
             root=".",
-            sys_inputs={"data_path": session_yaml_rel}
+            sys_inputs={"data_path": session_yaml_rel},
+            pdf_standards=["1.7"]
         )
         return pdf_bytes, None
     except Exception as e:

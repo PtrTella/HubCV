@@ -38,7 +38,7 @@
     fill: white
   )
 
-  #set text(font: font-family, size: base-size, fill: primary-color, lang: lang)
+  #set text(font: font-family, size: base-size, fill: primary-color, lang: lang, hyphenate: false)
   #set par(justify: true, leading: line-spacing)
 
   // ==================== ACADEMIC HEADER ====================

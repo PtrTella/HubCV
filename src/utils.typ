@@ -39,34 +39,26 @@
   }
 }
 
-// --- ICONS (Clean Typst-native representations) ---
-#let icon-phone = [#box(baseline: 10%, text(size: 8.5pt)[📞])]
-#let icon-mail = [#box(baseline: 10%, text(size: 8.5pt)[✉])]
-#let icon-github = [#box(baseline: 10%, text(size: 8.5pt)[⌥])]
-#let icon-location = [#box(baseline: 10%, text(size: 8.5pt)[📍])]
-#let icon-calendar = [#box(baseline: 10%, text(size: 8.5pt)[🗓])]
-#let icon-link = [#box(baseline: 10%, text(size: 8.5pt)[🔗])]
+// --- PURE VECTOR SVG ICONS (100% ATS COMPLIANT - ZERO TYPE 3 FONTS) ---
+#let vector-icon(name, size: 9pt) = {
+  box(baseline: 14%, width: size, height: size)[
+    #image("/assets/icons/" + name + ".svg", width: 100%, height: 100%)
+  ]
+}
+
+#let icon-mail = vector-icon("mail")
+#let icon-phone = vector-icon("phone")
+#let icon-github = vector-icon("github")
+#let icon-location = vector-icon("location")
+#let icon-link = vector-icon("link")
 #let icon-bullet = [•]
 
-// Minimal vector-styled glyphs for modern tech template
 #let mini-icon(name, fill: rgb("475569")) = {
-  box(baseline: 15%, width: 11pt, height: 11pt)[
-    #if name == "mail" [
-      #align(center + horizon)[#text(size: 8.5pt, fill: fill)[✉]]
-    ] else if name == "phone" [
-      #align(center + horizon)[#text(size: 8.5pt, fill: fill)[☎]]
-    ] else if name == "github" [
-      #align(center + horizon)[#text(size: 8pt, fill: fill, weight: "bold")[GH]]
-    ] else if name == "location" [
-      #align(center + horizon)[#text(size: 8.5pt, fill: fill)[⌖]]
-    ] else if name == "calendar" [
-      #align(center + horizon)[#text(size: 8.5pt, fill: fill)[◷]]
-    ] else if name == "link" [
-      #align(center + horizon)[#text(size: 8.5pt, fill: fill)[↗]]
-    ] else [
-      #align(center + horizon)[#text(size: 8.5pt, fill: fill)[•]]
-    ]
-  ]
+  if name in ("mail", "phone", "github", "location", "link") {
+    vector-icon(name)
+  } else {
+    [•]
+  }
 }
 
 // --- BADGE / SKILL CHIP ---

@@ -48,7 +48,7 @@
     fill: white
   )
 
-  #set text(font: font-family, size: base-size, fill: main-text, lang: lang)
+  #set text(font: font-family, size: base-size, fill: main-text, lang: lang, hyphenate: false)
   #set par(justify: true, leading: line-spacing)
 
   // ==================== SIDEBAR CONTENT (PLACED ON FIRST PAGE) ====================
@@ -102,19 +102,19 @@
       // Contacts
       #let contact-rows = ()
       #if personal.at("email", default: "") != "" {
-        contact-rows.push([✉])
+        contact-rows.push([#box(baseline: 15%, width: 8.5pt, height: 8.5pt, image("/assets/icons/mail.svg"))])
         contact-rows.push([#link("mailto:" + personal.email)[#text(size: size-small, fill: sidebar-text)[#personal.email]]])
       }
       #if personal.at("phone", default: "") != "" {
-        contact-rows.push([☎])
+        contact-rows.push([#box(baseline: 15%, width: 8.5pt, height: 8.5pt, image("/assets/icons/phone.svg"))])
         contact-rows.push([#link("tel:" + personal.phone)[#text(size: size-small, fill: sidebar-text)[#personal.phone]]])
       }
       #if personal.at("github", default: "") != "" {
-        contact-rows.push([⌥])
+        contact-rows.push([#box(baseline: 15%, width: 8.5pt, height: 8.5pt, image("/assets/icons/github.svg"))])
         contact-rows.push([#link("https://" + personal.github.replace("https://", ""))[#text(size: size-small, fill: sidebar-text)[#personal.github]]])
       }
       #if personal.at("location", default: "") != "" {
-        contact-rows.push([⌖])
+        contact-rows.push([#box(baseline: 15%, width: 8.5pt, height: 8.5pt, image("/assets/icons/location.svg"))])
         contact-rows.push([#text(size: size-small, fill: sidebar-text)[#personal.location]])
       }
 

@@ -44,7 +44,7 @@
     fill: white
   )
 
-  set text(font: font-family, size: base-size, fill: secondary-text, lang: lang)
+  set text(font: font-family, size: base-size, fill: secondary-text, lang: lang, hyphenate: false)
   set par(justify: true, leading: line-spacing)
 
   // ==================== TWO-TONE HEADER ====================
@@ -90,20 +90,20 @@
               #set text(size: size-small, weight: "medium", fill: primary-text)
               #let contact-rows = ()
               #if personal.at("phone", default: "") != "" {
-                contact-rows.push(align(right)[📞])
-                contact-rows.push(align(left)[#personal.phone])
+                contact-rows.push(align(right + horizon)[#box(baseline: 15%, width: 8.5pt, height: 8.5pt, image("/assets/icons/phone.svg"))])
+                contact-rows.push(align(left + horizon)[#link("tel:" + personal.phone)[#personal.phone]])
               }
               #if personal.at("email", default: "") != "" {
-                contact-rows.push(align(right)[✉️])
-                contact-rows.push(align(left)[#personal.email])
+                contact-rows.push(align(right + horizon)[#box(baseline: 15%, width: 8.5pt, height: 8.5pt, image("/assets/icons/mail.svg"))])
+                contact-rows.push(align(left + horizon)[#link("mailto:" + personal.email)[#personal.email]])
               }
               #if personal.at("github", default: "") != "" {
-                contact-rows.push(align(right)[🌐])
-                contact-rows.push(align(left)[#personal.github])
+                contact-rows.push(align(right + horizon)[#box(baseline: 15%, width: 8.5pt, height: 8.5pt, image("/assets/icons/github.svg"))])
+                contact-rows.push(align(left + horizon)[#link("https://" + personal.github.replace("https://", ""))[#personal.github]])
               }
               #if personal.at("location", default: "") != "" {
-                contact-rows.push(align(right)[📍])
-                contact-rows.push(align(left)[#personal.location])
+                contact-rows.push(align(right + horizon)[#box(baseline: 15%, width: 8.5pt, height: 8.5pt, image("/assets/icons/location.svg"))])
+                contact-rows.push(align(left + horizon)[#personal.location])
               }
               #if contact-rows.len() > 0 [
                 #grid(
